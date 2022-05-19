@@ -17,14 +17,13 @@ class Pedal {
     bool state;
     int note;
     
-  Pedal(int pin = 0, bool _state = 0, int _note = 0) {
+  Pedal(int _pin = 0, bool _state = 0, int _note = 0) {
     pin = _pin;
     state = _state;
     note = _note;
   };
   
   void changeState() {
-    String print_state;
     state = !state;
     
     if (state == 1) {
@@ -49,24 +48,26 @@ void setup() {
   Serial.begin(31250);
 
   // Loop through each Pedal object in the array and assign sequential pins
-  for (int i = 0; i < PEDAL_COUNT; i++){
+  for (int i = 0; i < PEDAL_COUNT; i++) {
      pedals[i].pin = i+2;
      pedals[i].note = i+24;
      pedals[i].state = 0;
   }  
 }
 
-void check_velocity(){
+void check_velocity() {
   int pot_value = map(analogRead(A0), 0, 1023, 0, 127);
-  if (pot_value != velocity) {
-    velocity = pot_value;
-  }
+  velocity = pot_value;
 }
 
 void read_pedals(){
 
-  for (int i = 0; i < PEDAL_COUNT; i++){
-    if (((digitalRead(pedals[i].pin) == LOW) && (pedals[i].state == 1)) || ((digitalRead(pedals[i].pin) == HIGH) && (pedals[i].state == 0))) {
+  for (int i = 0; i < PEDAL_COUNT; i++) {
+    if (
+         ((digitalRead(pedals[i].pin) == LOW) && (pedals[i].state == 1)) 
+         || 
+         ((digitalRead(pedals[i].pin) == HIGH) && (pedals[i].state == 0))
+       ) {
       pedals[i].changeState();
       delay(3);
     }
