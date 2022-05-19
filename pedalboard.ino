@@ -63,11 +63,11 @@ void check_velocity() {
 void read_pedals(){
 
   for (int i = 0; i < PEDAL_COUNT; i++) {
-    if (
-         ((digitalRead(pedals[i].pin) == LOW) && (pedals[i].state == 1)) 
-         || 
-         ((digitalRead(pedals[i].pin) == HIGH) && (pedals[i].state == 0))
-       ) {
+    
+    bool pedal_turned_on = (digitalRead(pedals[i].pin) == HIGH) && (pedals[i].state == 0);
+    bool pedal_turned_off = (digitalRead(pedals[i].pin) == LOW) && (pedals[i].state == 1);
+    
+    if (pedal_turned_on || pedal_turned_off){
       pedals[i].changeState();
       delay(3);
     }
